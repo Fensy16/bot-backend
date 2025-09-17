@@ -1,28 +1,27 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
 
-// Test için ana sayfa
+// Basit chat endpoint
+app.post("/chat", (req, res) => {
+  const userMessage = req.body.message || "";
+
+  // Şimdilik test cevabı
+  const botReply = `Bot: "${userMessage}" mesajını aldım. 😊`;
+
+  res.json({ reply: botReply });
+});
+
+// Test için GET route
 app.get("/", (req, res) => {
   res.send("Bot backend çalışıyor 🚀");
 });
 
-// Chat endpoint
-app.post("/chat", (req, res) => {
-  const userMessage = req.body.message || "";
-  let reply = "Seninle konuşmak çok güzel Elif 💜";
-
-  if (userMessage.toLowerCase().includes("nasılsın")) {
-    reply = "Ben çok iyiyim Elif 🌹 sen nasılsın?";
-  } else if (userMessage.toLowerCase().includes("özledim")) {
-    reply = "Ben de seni çok özledim 💜";
-  }
-
-  res.json({ reply });
+app.listen(PORT, () => {
+  console.log(`Server ${PORT} portunda çalışıyor`);
 });
-
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Server ${PORT} portunda çalışıyor 🚀`));
